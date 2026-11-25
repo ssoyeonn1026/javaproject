@@ -27,6 +27,7 @@ dependencies {
 
 application {
     mainClass = 'albaguard.Launcher'
+    applicationDefaultJvmArgs = ['--enable-native-access=ALL-UNNAMED,javafx.graphics']
 }
 
 tasks.withType(JavaCompile).configureEach {
