@@ -21,17 +21,7 @@ public class BasePayRule implements PayRule {
         int wage = ctx.contract().hourlyWage();
         // 분 × 시급 ÷ 60 을 정수로 계산해 0.5 이상 올림 (부동소수점 오차 방지)
         int amount = (int) (((long) minutes * wage * 2 + 60) / 120);
-        String description = String.format("%s × %,d원", formatDuration(minutes), wage);
+        String description = String.format("%s × %,d원", PayFormat.duration(minutes), wage);
         return List.of(new PayLine(PayItem.BASE, amount, description));
-    }
-
-    /** 분을 "76시간 30분" 형태로 바꾼다. 분이 0이면 "76시간". */
-    private static String formatDuration(int minutes) {
-        int hours = minutes / 60;
-        int rest = minutes % 60;
-        if (rest == 0) {
-            return hours + "시간";
-        }
-        return hours == 0 ? rest + "분" : hours + "시간 " + rest + "분";
     }
 }
