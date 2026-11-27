@@ -54,7 +54,7 @@ class WeeklyHolidayPayRuleTest {
     }
 
     private static List<PayLine> apply(Contract c, YearMonth month, List<WorkRecord> records) {
-        return new WeeklyHolidayPayRule().apply(new PayContext(c, month, records, WAGE));
+        return new WeeklyHolidayPayRule().apply(new PayContext(c, month, records));
     }
 
     private static int total(List<PayLine> lines) {
@@ -168,7 +168,7 @@ class WeeklyHolidayPayRuleTest {
 
         // 이웃 달(11/30) 기록이 있으면 12/6(일)이 속한 주가 12월에 계산된다
         List<PayLine> withAdjacent = new WeeklyHolidayPayRule()
-                .apply(new PayContext(c, DEC, dec, WAGE, nov)).stream()
+                .apply(new PayContext(c, DEC, dec, nov)).stream()
                 .filter(l -> l.description().startsWith("11/30~12/6")).toList();
         assertEquals(1, withAdjacent.size());
         assertEquals(37_152, withAdjacent.get(0).amount());

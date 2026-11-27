@@ -41,7 +41,7 @@ class BasePayRuleTest {
             records.add(record(day, "18:00", "23:00", 30));
         }
 
-        List<PayLine> lines = new BasePayRule().apply(new PayContext(contract(10_320), NOV, records, 10_320));
+        List<PayLine> lines = new BasePayRule().apply(new PayContext(contract(10_320), NOV, records));
 
         assertEquals(1, lines.size());
         assertEquals(PayItem.BASE, lines.get(0).item());
@@ -51,15 +51,15 @@ class BasePayRuleTest {
 
     @Test
     void 근무_기록이_없으면_PayLine_없음() {
-        List<PayLine> lines = new BasePayRule().apply(new PayContext(contract(10_320), NOV, List.of(), 10_320));
+        List<PayLine> lines = new BasePayRule().apply(new PayContext(contract(10_320), NOV, List.of()));
         assertTrue(lines.isEmpty());
     }
 
     @Test
     void 원_단위는_0점5_이상_올림() {
         // 1분 × 30원 ÷ 60 = 0.5 → 1원, 1분 × 29원 ÷ 60 = 0.48 → 0원
-        PayContext up = new PayContext(contract(30), NOV, List.of(record(2, "18:00", "18:01", 0)), 10_320);
-        PayContext down = new PayContext(contract(29), NOV, List.of(record(2, "18:00", "18:01", 0)), 10_320);
+        PayContext up = new PayContext(contract(30), NOV, List.of(record(2, "18:00", "18:01", 0)));
+        PayContext down = new PayContext(contract(29), NOV, List.of(record(2, "18:00", "18:01", 0)));
 
         assertEquals(1, new BasePayRule().apply(up).get(0).amount());
         assertEquals(0, new BasePayRule().apply(down).get(0).amount());
@@ -68,7 +68,7 @@ class BasePayRuleTest {
     @Test
     void 자정을_넘는_근무도_합산() {
         List<WorkRecord> records = List.of(record(2, "22:00", "02:00", 0)); // 240분
-        List<PayLine> lines = new BasePayRule().apply(new PayContext(contract(10_320), NOV, records, 10_320));
+        List<PayLine> lines = new BasePayRule().apply(new PayContext(contract(10_320), NOV, records));
 
         assertEquals(41_280, lines.get(0).amount()); // 4시간 × 10,320
         assertEquals("4시간 × 10,320원", lines.get(0).description());

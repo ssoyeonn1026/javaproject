@@ -36,7 +36,7 @@ class NightPayRuleTest {
     }
 
     private static List<PayLine> apply(int wage, List<WorkRecord> records) {
-        return new NightPayRule().apply(new PayContext(contract(wage), NOV, records, WAGE));
+        return new NightPayRule().apply(new PayContext(contract(wage), NOV, records));
     }
 
     @Test

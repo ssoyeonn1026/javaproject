@@ -22,7 +22,7 @@ class HolidayPayRuleTest {
     private static final LocalDate SUN = LocalDate.of(2026, 11, 1);
 
     private static List<PayLine> apply(Contract c, List<WorkRecord> records) {
-        return new HolidayPayRule().apply(new PayContext(c, NOV, records, WAGE));
+        return new HolidayPayRule().apply(new PayContext(c, NOV, records));
     }
 
     private static WorkRecord holiday(String id, String in, String out) {

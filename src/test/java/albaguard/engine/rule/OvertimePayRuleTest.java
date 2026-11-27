@@ -25,7 +25,7 @@ class OvertimePayRuleTest {
     private static final LocalDate MON = LocalDate.of(2026, 11, 2);
 
     private static List<PayLine> apply(Contract c, List<WorkRecord> records) {
-        return new OvertimePayRule().apply(new PayContext(c, NOV, records, WAGE));
+        return new OvertimePayRule().apply(new PayContext(c, NOV, records));
     }
 
     /** 월요일(11/2)부터 days일 연속, 하루 hours시간 근무 (휴게 0). */
@@ -85,7 +85,7 @@ class OvertimePayRuleTest {
 
         assertEquals(240 * WAGE / 120, apply(mondayEvening(), records).get(0).amount());
         assertEquals(210 * WAGE / 120,
-                new PartTimeOvertimeRule().apply(new PayContext(mondayEvening(), NOV, records, WAGE))
+                new PartTimeOvertimeRule().apply(new PayContext(mondayEvening(), NOV, records))
                         .get(0).amount());
     }
 
@@ -99,9 +99,9 @@ class OvertimePayRuleTest {
         }
 
         List<PayLine> novLines = new OvertimePayRule()
-                .apply(new PayContext(fullTime(), NOV, List.of(nov30), WAGE, decRecords));
+                .apply(new PayContext(fullTime(), NOV, List.of(nov30), decRecords));
         List<PayLine> decLines = new OvertimePayRule()
-                .apply(new PayContext(fullTime(), DEC, decRecords, WAGE, List.of(nov30)));
+                .apply(new PayContext(fullTime(), DEC, decRecords, List.of(nov30)));
 
         assertTrue(novLines.isEmpty());
         assertEquals(41_280, decLines.get(0).amount());

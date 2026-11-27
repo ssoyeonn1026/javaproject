@@ -24,7 +24,7 @@ class PartTimeOvertimeRuleTest {
     private static final LocalDate TUE = LocalDate.of(2026, 11, 3);
 
     private static List<PayLine> apply(Contract c, List<WorkRecord> records) {
-        return new PartTimeOvertimeRule().apply(new PayContext(c, NOV, records, WAGE));
+        return new PartTimeOvertimeRule().apply(new PayContext(c, NOV, records));
     }
 
     @Test

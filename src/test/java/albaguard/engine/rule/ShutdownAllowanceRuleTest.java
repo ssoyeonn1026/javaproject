@@ -30,7 +30,7 @@ class ShutdownAllowanceRuleTest {
     }
 
     private static List<PayLine> apply(Contract c, List<WorkRecord> records) {
-        return new ShutdownAllowanceRule().apply(new PayContext(c, NOV, records, WAGE));
+        return new ShutdownAllowanceRule().apply(new PayContext(c, NOV, records));
     }
 
     @Test
