@@ -71,7 +71,7 @@ public class WeeklyHolidayPayRule implements PayRule {
         int scheduled = 0;
         for (int i = 0; i < 7; i++) {
             LocalDate date = monday.plusDays(i);
-            if (!isScheduledDay(contract, date)) {
+            if (!ScheduledDays.isScheduled(contract, date)) {
                 continue;
             }
             scheduled++;
@@ -80,15 +80,5 @@ public class WeeklyHolidayPayRule implements PayRule {
             }
         }
         return scheduled > 0;
-    }
-
-    private static boolean isScheduledDay(Contract contract, LocalDate date) {
-        if (!contract.workDays().contains(date.getDayOfWeek())) {
-            return false;
-        }
-        if (date.isBefore(contract.startDate())) {
-            return false;
-        }
-        return contract.endDate() == null || !date.isAfter(contract.endDate());
     }
 }
