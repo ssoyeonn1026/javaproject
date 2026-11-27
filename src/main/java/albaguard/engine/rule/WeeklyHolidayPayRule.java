@@ -6,11 +6,8 @@ import albaguard.domain.PayLine;
 import albaguard.domain.WorkRecord;
 import albaguard.engine.WorkTime;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -57,7 +54,7 @@ public class WeeklyHolidayPayRule implements PayRule {
         int holidayMinutes = Math.round(paidWeekMinutes / 5f);
 
         List<PayLine> lines = new ArrayList<>();
-        for (LocalDate sunday : sundaysOf(ctx.month())) {
+        for (LocalDate sunday : Weeks.sundaysOf(ctx.month())) {
             LocalDate monday = sunday.minusDays(6);
             if (!attendedAllScheduledDays(contract, monday, attended)) {
                 continue;
@@ -67,17 +64,6 @@ public class WeeklyHolidayPayRule implements PayRule {
             lines.add(new PayLine(PayItem.WEEKLY_HOLIDAY, amount, description));
         }
         return lines;
-    }
-
-    /** 일요일이 해당 월에 속하는 주들의 일요일 목록. */
-    private static List<LocalDate> sundaysOf(YearMonth month) {
-        List<LocalDate> sundays = new ArrayList<>();
-        LocalDate sunday = month.atDay(1).with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
-        while (YearMonth.from(sunday).equals(month)) {
-            sundays.add(sunday);
-            sunday = sunday.plusWeeks(1);
-        }
-        return sundays;
     }
 
     /** 그 주의 소정근로일이 하나 이상 있고 모두 출근했으면 true. */
